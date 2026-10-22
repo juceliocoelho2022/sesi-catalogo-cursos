@@ -1,0 +1,28 @@
+# Deploy completo em Render Free (web + PostgreSQL).
+# Não há credenciais gravadas aqui; DATABASE_URL é injetada pela plataforma.
+services:
+  - type: web
+    name: sesi-catalogo-519-web
+    runtime: docker
+    plan: free
+    region: ohio
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: SEED_DEMO_DATA
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sesi-catalogo-519-db
+          property: connectionString
+
+databases:
+  - name: sesi-catalogo-519-db
+    plan: free
+    region: ohio
+    postgresMajorVersion: "17"
+    databaseName: sesi_catalogo
+    ipAllowList: []

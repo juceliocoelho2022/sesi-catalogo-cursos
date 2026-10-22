@@ -1,5 +1,7 @@
 # Publicação gratuita — Render (React + .NET + PostgreSQL)
 
+> **Situação verificada em 22/10/2026:** aplicação **Live** no Render em <https://sesi-catalogo-519-web.onrender.com/>. Serviços Web Free e PostgreSQL 17 Free foram criados na conta Render conectada ao repositório, e a API pública retornou seis cursos. A criação inicial foi feita diretamente pelos serviços do Render; o Blueprint `render.yaml` permanece como configuração reproduzível. A implementação da interface e os endpoints básicos foram confirmados, mas testes mobile e auditoria de fidelidade ao Figma ainda estão pendentes.
+
 ## Estratégia de implantação
 
 Este repositório contém o arquivo `render.yaml` e um `Dockerfile` para hospedar **o catálogo completo em um único domínio**:
@@ -18,7 +20,7 @@ Navegador
                                  +-- PostgreSQL Render Free
 ```
 
-A URL real só poderá ser informada **depois** que o Render criar o serviço. A URL acima é apenas um modelo, não um endereço existente.
+A URL real já está disponível: <https://sesi-catalogo-519-web.onrender.com/>. A URL genérica no diagrama acima é apenas um modelo.
 
 ### Por que esse formato?
 
@@ -114,4 +116,4 @@ O Blueprint inicialmente pode apontar para `feature/filtros-ux`. Depois que os t
 - [ ] Artefatos de publicação em ZIP
 - [ ] Envio antes das 08h de 26/10/2026 (horário de Brasília)
 
-**Esta documentação representa um roteiro de implantação, não prova que a aplicação já esteja publicada.**
+**Publicação confirmada em 22/10/2026.** A entrega final ainda depende da documentação do Figma, da disponibilização do repositório aos avaliadores e do ZIP solicitado no case.

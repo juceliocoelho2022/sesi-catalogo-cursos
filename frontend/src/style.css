@@ -95,3 +95,66 @@
   .grade { grid-template-columns: minmax(0, 1fr); }
   .grade article > .corpo { min-height: 280px; }
 }
+
+
+/* Identidade visual: referência ao fluxo "01. Landing Page" do Figma fornecido. */
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+.skip-link { position:absolute; top:-70px; left:16px; z-index:100; padding:10px 16px; border-radius:6px; color:#111; background:#fff; }
+.skip-link:focus { top:8px; }
+.site-header { position:relative; z-index:2; display:block; padding:0 20px; background:#fff; border-bottom:1px solid #e6e6e6; }
+.site-header__inner { max-width:1150px; min-height:79px; margin:auto; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+.site-header .brand { display:inline-flex; align-items:center; flex-shrink:0; }
+.site-header .brand img { display:block; width:180px; max-width:none; }
+.site-header .nav { display:flex; align-items:center; justify-content:center; gap:30px; flex-wrap:wrap; }
+.site-header .nav a { color:#222; font-size:15px; font-weight:700; text-decoration:none; padding:10px 2px; }
+.site-header .nav a:hover { color:#b51125; text-decoration:underline; }
+.site-header .nav a:focus-visible, .hero__cta:focus-visible { outline:3px solid #225bad; outline-offset:4px; }
+.site-header .case-label { font-size:12px; color:#666; text-align:right; }
+main { max-width:none; margin:0; padding:0; }
+.hero {
+  min-height:425px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  background:
+    linear-gradient(90deg,rgba(142,6,27,.98) 0%,rgba(172,12,36,.95) 45%,rgba(143,5,25,.57) 100%),
+    url('/assets/hero-image.png') center center / cover no-repeat;
+}
+.hero__content { width:min(100%,1150px); margin:0 auto; padding:70px 20px 78px; }
+.hero__eyebrow { margin:0 0 16px; color:#fff; letter-spacing:.15em; font-size:13px; font-weight:700; }
+.hero h1 { max-width:640px; margin:0 0 18px; font-size:clamp(34px,4.6vw,58px); line-height:1.12; letter-spacing:-.025em; }
+.hero__content > p:not(.hero__eyebrow) { max-width:570px; margin:0 0 28px; font-size:18px; line-height:1.5; }
+.hero__cta { display:inline-flex; align-items:center; gap:16px; padding:13px 22px; border-radius:6px; background:#161616; color:#fff; font-weight:700; text-decoration:none; }
+.hero__cta:hover { background:#303030; }
+.catalogo { max-width:1150px; padding:52px 18px 24px; margin:0 auto; scroll-margin-top:15px; }
+.catalogo__eyebrow { margin:0 0 8px; color:#b31125; font-size:13px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; }
+.catalogo__title { margin:0 0 8px; font-size:clamp(28px,3.4vw,38px); line-height:1.2; }
+.catalogo > p:not(.catalogo__eyebrow):not(.ajuda-filtros) { color:#444; }
+.catalogo .filtros { margin-top:25px; }
+footer { margin-top:54px; padding:28px 18px; }
+.site-footer__inner { max-width:1150px; margin:auto; display:flex; align-items:center; gap:28px; text-align:left; }
+.site-footer__inner img { display:block; width:150px; max-height:70px; object-fit:contain; }
+.site-footer__inner strong { font-size:15px; }
+.site-footer__inner p { margin:5px 0 0; font-size:13px; color:#eee; }
+@media (max-width:900px) {
+  .site-header__inner { flex-wrap:wrap; justify-content:center; gap:8px 24px; padding:10px 0; }
+  .site-header .case-label { display:none; }
+  .hero { min-height:385px; }
+  .hero__content { padding:50px 25px; }
+}
+@media (max-width:600px) {
+  .site-header { padding:0 12px; }
+  .site-header__inner { min-height:0; flex-direction:column; gap:4px; padding:13px 0; }
+  .site-header .brand img { width:165px; }
+  .site-header .nav { gap:20px; }
+  .site-header .nav a { font-size:14px; padding:6px 0; }
+  .hero { min-height:390px; background-position:60% center; }
+  .hero__content { padding:44px 20px; }
+  .hero__content > p:not(.hero__eyebrow) { font-size:16px; }
+  .catalogo { padding:34px 14px 10px; }
+  .site-footer__inner { flex-direction:column; text-align:center; gap:14px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+}

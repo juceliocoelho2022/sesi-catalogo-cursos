@@ -37,7 +37,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 | RF15 | Listagem dos cursos por API | Validado publicamente | PASSA |
 | RF16 | Pesquisa por nome | Retorna 1 curso para `Matemática` na base fictícia | PASSA |
 | RF17 | Filtro de categoria | Matemática e Linguagens retornam 2 cada | PASSA |
-| RF18 | Filtros de modalidade e status | Implementados; script automatizado de aceitação adicionado para execução em CI | IMPLEMENTADO / AGUARDANDO CI |
+| RF18 | Filtros de modalidade e status | Validados no CI de integração contra PostgreSQL; 12 testes HTTP aprovados | PASSA |
 | RF19 | Pesquisa + filtros combinados | `Matemática` + `Linguagens` retorna 0 | PASSA |
 | RF20 | Contagem e limpar filtros | Contagem da API visível; limpeza implementada no React | IMPLEMENTADO |
 | RF21 | Abrir detalhes do curso | API e captura do candidato confirmam expansão no card | PASSA |
@@ -49,7 +49,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 | RF27 | Uso de IA documentado | `USO_DE_IA.md` cobre ferramenta, finalidade, prompts, validações, erro e correção | PASSA |
 | RF28 | README técnico | Objetivo, tecnologias, arquitetura, pastas, execução, banco, endpoints, modelo, responsividade, acessibilidade, publicação, limitações | PASSA |
 | RF29 | Migrations/scripts | `InitialCreate` versionada e aplicada ao Render no startup | PASSA |
-| RF30 | ZIP de arquivos de publicação | Job automático `entrega-zip` criado no GitHub Actions; comprovação de artefato pendente | PENDENTE |
+| RF30 | ZIP de arquivos de publicação | Job `entrega-zip` aprovado; artefato `sesi-519-publicacao` (23,5 MB, criado em 22/10/2026) disponível no GitHub Actions; baixar e conferir antes do envio | GERADO / CONFERÊNCIA FINAL PENDENTE |
 | RF31 | Limitações/diferenças ao Figma identificadas e justificadas | Limitações técnicas documentadas; diferenças visuais específicas ainda não verificáveis | PENDENTE |
 | RF32 | Link do GitHub disponível aos avaliadores | Repositório privado na última verificação; necessidade de acesso de avaliadores | PENDENTE |
 | RF33 | Integrar Moodle | Edital diz que é diferencial opcional, não obrigatório | OPCIONAL |
@@ -62,7 +62,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 
 **A-02 — Repositório privado.** Na última consulta, o repo continua `private`. A entrega por URL só funciona se os avaliadores tiverem acesso. Confirmar instruções para habilitar acesso a avaliadores ou tornar público **somente se isso for permitido pelo processo seletivo e pela confidencialidade dos anexos**. Não alterar visibilidade sem decisão explícita.
 
-**A-03 — ZIP exigido pelo edital.** O edital pede uma relação de arquivos de publicação em formato ZIP. O novo job `entrega-zip` gera `sesi-519-publicacao.zip` após compilar backend, frontend e testes. Antes da entrega, é necessário confirmar que o GitHub Actions produziu o artefato, baixá-lo e conferir seu conteúdo.
+**A-03 — ZIP exigido pelo edital.** O edital pede uma relação de arquivos de publicação em formato ZIP. O job `entrega-zip` gerou com sucesso `sesi-519-publicacao.zip`, disponível no artefato `sesi-519-publicacao` na execução [39774064375](https://github.com/juceliocoelho2022/sesi-catalogo-cursos/actions/runs/39774064375). Antes do envio, baixar e conferir se o pacote contém aplicação publicada (`app/`), arquivo `codigo-fonte.zip`, documentos e configuração Docker.
 
 ### IMPORTANTE — Qualidade e robustez
 
@@ -76,7 +76,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 
 **A-08 — Backup temporário versionado.** `App.tsx.bak` e `style.css.bak` foram encontrados no GitHub. Foram removidos na branch auditada.
 
-**A-09 — API funcional, mas inicialmente apenas CI de build.** Foram acrescentados 12 cenários de contrato HTTP via `tests/smoke-api.sh` e um job de integração no GitHub Actions com PostgreSQL real em container. O status desse novo job precisa ser verificado antes do merge.
+**A-09 — API funcional, mas inicialmente apenas CI de build.** Foram acrescentados 12 cenários de contrato HTTP via `tests/smoke-api.sh` e um job de integração no GitHub Actions com PostgreSQL 17 real em container. **A execução 39774064375 foi aprovada**: os cinco jobs (backend, frontend, Docker, integração e ZIP) terminaram com sucesso.
 
 **A-10 — Escopo operacional da hospedagem gratuita.** Web Service Free pode hibernar, e o banco gratuito do Render vence em 21/11/2026. A página de validação e as instruções locais precisam permanecer acessíveis para a avaliação.
 
@@ -99,12 +99,20 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 | Migrations | `backend/CatalogoCursos.Api/Migrations/` |
 | README | `README.md` |
 | Registro de IA | `USO_DE_IA.md` |
-| ZIP de publicação | `sesi-519-publicacao.zip` gerado pelo CI (confirmar execução e baixar) |
+| ZIP de publicação | Artefato `sesi-519-publicacao` disponível em [GitHub Actions 39774064375](https://github.com/juceliocoelho2022/sesi-catalogo-cursos/actions/runs/39774064375); baixar e conferir |
 | Relação de limitações | Seção README e este documento; falta comparação definitiva com Figma |
 
-## 5. Plano de aceite objetivo
+## 5. Ações corretivas já executadas nesta auditoria
 
-**Primeiro:** conferir CI GREEN para backend, frontend, container, integração e ZIP.  
+- Removidos os arquivos `frontend/src/App.tsx.bak` e `frontend/src/style.css.bak`, que eram resíduos de edição.
+- Criado `tests/smoke-api.sh` com 12 cenários verificáveis.
+- Implementado job `integration` usando PostgreSQL real no GitHub Actions; **aprovado**.
+- Implementado job `entrega-zip`, produzindo artefatos de publicação compilados e arquivo de código-fonte; **aprovado**.
+- Alinhado `render.yaml` à região e ao nome do banco realmente criados na conta (`virginia`, `sesi_catalogo_519_db`).
+
+## 6. Plano de aceite objetivo
+
+**Primeiro:** CI GREEN confirmado para backend, frontend, container, integração e ZIP na execução 39774064375; falta baixar e inspecionar o ZIP.  
 **Segundo:** conferir manualmente o Figma oficial lado a lado com a URL Render e registrar eventuais diferenças justificadas.  
 **Terceiro:** testar mobile, teclado, loading, erro e imagens, com captura de evidência.  
 **Quarto:** conceder acesso apropriado dos recrutadores ao GitHub, sem divulgar secrets ou material restrito indevidamente.  

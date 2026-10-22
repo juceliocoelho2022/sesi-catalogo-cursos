@@ -22,10 +22,10 @@ O Centro de Tecnologias e Educação Digital (CTED) necessita de um catálogo we
 | `GET /api/cursos` retorna seis cursos | **Validado pelo candidato** |
 | Filtros isolados de Matemática e Linguagens retornam dois cursos cada | **Validado pelo candidato** |
 | Frontend React exibindo os cursos | **Observado em captura de tela** |
-| Exibição de detalhes dentro do card e chips de filtros | **Implementado nesta branch; teste no Windows pendente** |
+| Exibição de detalhes dentro do card e chips de filtros | **Validado visualmente no Windows pelo candidato** |
 | Validação abrangente de acessibilidade e fidelidade ao Figma | **Pendente** |
 | Testes automatizados | **Ainda não implementados** |
-| Aplicação publicada em hospedagem gratuita | **Pendente** |
+| Aplicação publicada em hospedagem gratuita | **Live no Render; URL pública e API consultadas em 22/10/2026** |
 
 Esses estados devem ser atualizados após cada evidência de teste; não se deve confundir compilação, integração em desenvolvimento e publicação em produção.
 
@@ -225,28 +225,54 @@ Essas decisões constam do código, mas a conformidade WCAG e a correspondência
 
 **Atenção:** esta lista é um roteiro de validação; não significa que todos os cenários já foram aprovados.
 
-## 10. Publicação gratuita (Render Blueprint)
+## 10. Publicação gratuita — Render
 
-A infraestrutura de demonstração está descrita em [`render.yaml`](render.yaml) e [`Dockerfile`](Dockerfile). **A publicação ainda depende da ativação pelo candidato na conta Render; não há URL pública validada neste momento.**
+**A aplicação está publicada e acessível publicamente.**
 
-A imagem Docker produz React e ASP.NET Core juntos: o React é servido de `wwwroot`, a API de `/api/*` e ambos compartilham o mesmo domínio HTTPS. Isso evita CORS entre serviços na produção. O banco PostgreSQL 17 é provisionado pelo Render no plano gratuito.
+- **Interface web:** <https://sesi-catalogo-519-web.onrender.com/>
+- **Health check:** <https://sesi-catalogo-519-web.onrender.com/health>
+- **Catálogo API:** <https://sesi-catalogo-519-web.onrender.com/api/cursos>
+- **Detalhes API:** <https://sesi-catalogo-519-web.onrender.com/api/cursos/1>
+- **Opções de filtros:** <https://sesi-catalogo-519-web.onrender.com/api/filtros>
 
-Siga o [guia de publicação detalhado](docs/PUBLICACAO_RENDER.md) para vincular o repositório privado, criar uma instância **Blueprint** em Render com os recursos **Web Free** + **Postgres Free**, executar o deploy e testar o site.
+**Infraestrutura implantada em 22/10/2026:**
+- Render Web Service **Free** com Docker; React e ASP.NET Core 10 na mesma origem HTTPS.
+- Render PostgreSQL 17 **Free**, banco `sesi-catalogo-519-db` exclusivo do case.
+- Branch de implantação atual: `feature/filtros-ux`; a `main` ainda está preservada aguardando validação e merge.
+- A conexão remota é fornecida como `DATABASE_URL` por um grupo de variáveis do Render, sem incluir segredo no GitHub.
+- `SEED_DEMO_DATA=true` permite aplicar a migration versionada e inserir os seis cursos de demonstração somente se o banco estiver vazio.
 
-**Segurança e inicialização:** o Render injeta `DATABASE_URL` sem expor credenciais no GitHub. Com `SEED_DEMO_DATA=true`, o backend aplica a migration versionada e carrega os seis cursos fictícios apenas quando a base estiver vazia. Em desenvolvimento local, continue usando a migration normal. Os dados da publicação ficam no PostgreSQL, e não no armazenamento efêmero do container.
+O `Dockerfile` e o `render.yaml` versionados documentam a infraestrutura. A criação efetiva dos dois serviços foi feita diretamente na conta Render, com o repositório GitHub vinculado.
 
-**Limitações do plano gratuito:** serviço web pode hibernar após 15 minutos de inatividade; a primeira visita pode levar aproximadamente um minuto. O PostgreSQL Free expira após **30 dias**. A documentação oficial está em <https://render.com/docs/free>. Não selecionar instâncias pagas.
+### Evidências da validação pública (22/10/2026)
 
-### Validação pós-publicação (somente após receber a URL real)
+| Cenário | Resultado observado |
+| --- | --- |
+| Render Web Service | **Live**, commit `a2111d1` |
+| `GET /health` | `{"status":"ok"}` |
+| `GET /api/cursos` | `total: 6` |
+| `GET /api/filtros` | 3 categorias, 2 modalidades, 3 status |
+| `GET /api/cursos?categoria=Linguagens` | 2 cursos |
+| `GET /api/cursos?categoria=Matemática` | 2 cursos |
+| `GET /api/cursos?pesquisa=Matemática&categoria=Linguagens` | 0 cursos, conforme filtro combinado |
+| `GET /api/cursos/1` | Detalhes com 2 módulos |
+| Página inicial | Frontend React renderizado com dados dos cursos |
+
+**Ainda requer validação manual:** fidelidade ao Figma oficial, navegação por teclado e responsividade mobile, imagens individuais na hospedagem, comportamento de abertura/fechamento do detalhe em navegador externo e acessibilidade. O endpoint `/health` comprova disponibilidade do processo, não saúde do banco; os endpoints de cursos confirmam também a consulta real.
+
+### Verificação por PowerShell
 
 ```powershell
-$site = "https://ENDERECO-REAL-DO-RENDER.onrender.com"
+$site = "https://sesi-catalogo-519-web.onrender.com"
 Invoke-RestMethod "$site/health"
 Invoke-RestMethod "$site/api/cursos"
+Invoke-RestMethod "$site/api/cursos?categoria=Linguagens"
 Invoke-RestMethod "$site/api/cursos/1" | ConvertTo-Json -Depth 10
 ```
 
-Também abra a URL HTTPS do site no navegador e teste a pesquisa, os filtros combinados, o detalhamento dentro de cada card, as imagens e a interface mobile.
+**Limitações do plano Free:** a instância web pode hibernar após 15 minutos de inatividade; o primeiro acesso pode demorar. O PostgreSQL Free foi criado em **22/10/2026** com expiração indicada pelo Render em **21/11/2026**. Isso não afeta a entrega imediata, mas restringe a disponibilidade de longo prazo.
+
+Para recriar a infraestrutura e revisar os cuidados de segurança, consulte [o guia de publicação](docs/PUBLICACAO_RENDER.md).
 
 ## 11. Limitações conhecidas e decisões de escopo
 
@@ -255,7 +281,7 @@ Também abra a URL HTTPS do site no navegador e teste a pesquisa, os filtros com
 - Sem testes automatizados integrados na versão atual; testes manuais são necessários.
 - Sem cache, paginação, telemetria de produção ou regras rígidas de validação para status/modalidade.
 - Dados e imagens são fictícios/de demonstração; o material visual pertence ao desafio.
-- Infraestrutura Render gratuita preparada em Blueprint/Docker, mas ainda não ativada; ZIP final e URL pública dependem de execução.
+- Infraestrutura Render gratuita publicada e API validada em 22/10/2026; ZIP final da entrega ainda pendente.
 - O `health` não avalia a saúde do PostgreSQL.
 - Os controles de acessibilidade foram iniciados, sem auditoria formal WCAG.
 

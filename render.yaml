@@ -5,7 +5,7 @@ services:
     name: sesi-catalogo-519-web
     runtime: docker
     plan: free
-    region: ohio
+    region: virginia
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /health
@@ -22,7 +22,7 @@ services:
 databases:
   - name: sesi-catalogo-519-db
     plan: free
-    region: ohio
+    region: virginia
     postgresMajorVersion: "17"
-    databaseName: sesi_catalogo
+    databaseName: sesi_catalogo_519_db
     ipAllowList: []

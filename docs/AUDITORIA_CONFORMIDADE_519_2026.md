@@ -8,9 +8,9 @@
 
 ## 1. Veredicto
 
-**Aderência funcional elevada, mas aprovação final condicionada.** Foram confirmados backend C#/.NET, frontend React, banco open source, publicação Free, API listando seis cursos e testes de categorias, busca e detalhamento. Há pendências materiais de **comparação ao Figma**, **evidências de responsividade e acessibilidade**, **pacote ZIP** e **acesso dos avaliadores ao GitHub**.
+**Aderência funcional elevada, mas aprovação final condicionada.** Foram confirmados backend C#/.NET, frontend React, banco open source, publicação Free, API listando seis cursos e testes de categorias, busca e detalhamento. Uma revisão do protótipo Figma em modo apresentação identificou os fluxos Landing Page, Detalhes Curso e AVA; o frontend recebeu melhorias visuais correspondentes. Permanecem pendentes a **homologação visual pixel a pixel**, **evidências de responsividade e acessibilidade**, **conferência do ZIP** e **acesso dos avaliadores ao GitHub**.
 
-**Não declarar “100% de acordo com o Figma” até comparar o protótipo e registrar divergências.** O link consta do DOCX; o acesso técnico à estrutura e à imagem do nó `6017:342` foi recusado pela integração Figma devido à permissão insuficiente. Uma captura manual do protótipo, disponibilizada pelo candidato, permitiria executar a comparação visual.
+**Não declarar “100% de acordo com o Figma”.** O protótipo público foi inspecionado em modo apresentação, embora o acesso à estrutura de design e medidas exatas tenha sido recusado. Os elementos identificados e as diferenças de escopo estão documentados em [DIFERENCAS_FIGMA.md](DIFERENCAS_FIGMA.md). Ainda falta a validação lado a lado de detalhes e dispositivos.
 
 **Link oficial do Figma:** [TEST DEV — SESI Indústria](https://www.figma.com/proto/YB0o91nnOEB5bXXCtmy5s6/-TEST-DEV--SESI-Ind%C3%BAstria?node-id=6017-342&p=f&viewport=-1570%2C411%2C0.09&t=tvoKbn8KIvr7vLak-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6017%3A342&show-proto-sidebar=1&page-id=3%3A2).
 
@@ -21,7 +21,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 | ID | Requisito oficial | Resultado / evidência | Estado |
 | --- | --- | --- | --- |
 | RF01 | Catálogo web de cursos | Página pública Render carrega React com cursos | PASSA |
-| RF02 | Frontend baseado no Figma oficial | Existe frontend funcional, mas não foi possível inspecionar o Figma para comparar | PENDENTE |
+| RF02 | Frontend baseado no Figma oficial | Protótipo inspecionado em modo apresentação; landing, hero, navegação e identidade foram aproximados; relatório de diferenças criado | IMPLEMENTADO / HOMOLOGAÇÃO VISUAL PENDENTE |
 | RF03 | Responsividade | CSS em 900/600 px; captura desktop conferida; teste real a 375 e 768 px ainda não evidenciado | IMPLEMENTADO |
 | RF04 | Acessibilidade | Labels, foco visível, `aria-live`, alertas e `aria-expanded`; sem teste WCAG/leitor de tela | IMPLEMENTADO |
 | RF05 | Backend em C#/.NET | ASP.NET Core 10 e controllers com DTOs | PASSA |
@@ -58,7 +58,7 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 
 ### CRÍTICO — Bloqueios antes de entregar
 
-**A-01 — Falta de aferição de fidelidade ao Figma.** O edital define o Figma como referência visual e de conteúdo. Não é suficiente a interface “estar bonita”. Precisamos comparar telas (desktop e mobile quando houver), tipografia, identidade, cores, componentes, informações fictícias, espaçamento, e registrar decisões e diferenças. Acesso à API do arquivo foi negado, e não foi fornecida uma captura comparável nesta auditoria.
+**A-01 — Aferição fina de fidelidade ao Figma ainda pendente.** O protótipo foi examinado em modo apresentação: Landing Page, Detalhes Curso e AVA. A landing recebeu hero industrial, navegação e CTA; a tela de detalhes continua inline (escolha intencional) e o AVA/Moodle permanece fora do escopo mínimo. O relatório [DIFERENCAS_FIGMA.md](DIFERENCAS_FIGMA.md) documenta essas diferenças. Ainda precisam ser checadas as medidas, cores exatas e telas mobile, já que a API de design não deu acesso.
 
 **A-02 — Repositório privado.** Na última consulta, o repo continua `private`. A entrega por URL só funciona se os avaliadores tiverem acesso. Confirmar instruções para habilitar acesso a avaliadores ou tornar público **somente se isso for permitido pelo processo seletivo e pela confidencialidade dos anexos**. Não alterar visibilidade sem decisão explícita.
 
@@ -113,9 +113,9 @@ Legenda: **PASSA** = evidência direta; **IMPLEMENTADO** = código existente, te
 ## 6. Plano de aceite objetivo
 
 **Primeiro:** CI GREEN confirmado para backend, frontend, container, integração e ZIP na execução 39774064375; falta baixar e inspecionar o ZIP.  
-**Segundo:** conferir manualmente o Figma oficial lado a lado com a URL Render e registrar eventuais diferenças justificadas.  
+**Segundo:** conferir manualmente o Figma oficial lado a lado com a URL Render, depois da revisão visual publicada; diferenças conhecidas já estão registradas em `docs/DIFERENCAS_FIGMA.md`.  
 **Terceiro:** testar mobile, teclado, loading, erro e imagens, com captura de evidência.  
 **Quarto:** conceder acesso apropriado dos recrutadores ao GitHub, sem divulgar secrets ou material restrito indevidamente.  
 **Quinto:** baixar e verificar o ZIP, integrar a branch aprovada na `main`, conferir novo deploy e enviar links antes de 26/10/2026 às 08h.
 
-**Veredicto:** **apto tecnicamente à demonstração, ainda não homologado integralmente contra o edital.**
+**Veredicto:** **apto tecnicamente à demonstração, ainda não homologado integralmente contra o edital.** Aderência visual parcial baseada em inspeção do modo protótipo e mudanças de landing. Exame pixel a pixel e acessibilidade seguem pendentes.

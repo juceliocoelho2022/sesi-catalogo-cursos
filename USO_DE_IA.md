@@ -55,3 +55,13 @@ Não registrar testes como aprovados sem executar e guardar a evidência corresp
 ## Responsabilidade humana
 
 A IA fornece sugestões. A seleção das soluções, validação, configuração do ambiente, comparação com protótipo, avaliação de limitações e apresentação técnica são responsabilidade do candidato. O código, os documentos e os resultados observados precisam ser revisados antes da entrega.
+
+## Publicação validada em 22/10/2026
+
+O assistente auxiliou na preparação de `Dockerfile`, `render.yaml` e dos ajustes de produção. O candidato autorizou a criação dos recursos gratuitos. A implantação real foi executada na conta Render, usando Docker e PostgreSQL 17 Free. O primeiro deploy falhou por conexão com `127.0.0.1:5433`; após vincular a variável de ambiente `DATABASE_URL` ao serviço web, a nova implantação ficou **Live**.
+
+**Validação efetiva:** página inicial React acessível por HTTPS; `GET /health` retornou `status: ok`, `GET /api/cursos` retornou seis cursos, `GET /api/filtros` retornou três categorias, duas modalidades e três status; consultas de categorias Matemática e Linguagens retornaram dois cursos cada; `GET /api/cursos/1` retornou dados e dois módulos; combinação incompatível de pesquisa e categoria retornou zero cursos.
+
+**Endereço publicado:** <https://sesi-catalogo-519-web.onrender.com/>.
+
+Esses testes não substituem a validação do Figma, da acessibilidade ou a entrega dos artefatos finais.

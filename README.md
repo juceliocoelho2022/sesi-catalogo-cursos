@@ -225,18 +225,28 @@ Essas decisões constam do código, mas a conformidade WCAG e a correspondência
 
 **Atenção:** esta lista é um roteiro de validação; não significa que todos os cenários já foram aprovados.
 
-## 10. Publicação
+## 10. Publicação gratuita (Render Blueprint)
 
-Ainda não executada. Plano proposto:
-1. Escolher hospedagem **gratuita** para frontend, API e PostgreSQL, sem custos ao candidato ou ao SESI/SENAI.
-2. Configurar `ConnectionStrings__DefaultConnection` como segredo no host do backend.
-3. Ajustar CORS para a origem HTTPS do frontend publicado (atualmente está restrito ao localhost).
-4. Executar migrations no banco remoto por processo controlado; carregar dados fictícios por mecanismo explicitamente definido para produção.
-5. Configurar `VITE_API_URL` no build do frontend para a URL pública da API.
-6. Verificar HTTPS, endpoints, refresh e funcionamento do catálogo na URL publicada.
-7. Gerar ZIP dos artefatos de publicação e registrar links e limitações na entrega.
+A infraestrutura de demonstração está descrita em [`render.yaml`](render.yaml) e [`Dockerfile`](Dockerfile). **A publicação ainda depende da ativação pelo candidato na conta Render; não há URL pública validada neste momento.**
 
-**Ponto importante:** a rotina atual de seed roda somente em `Development`. Publicar em `Production` sem estratégia de seed deixará o catálogo vazio. Essa pendência está identificada e não deve ser ocultada.
+A imagem Docker produz React e ASP.NET Core juntos: o React é servido de `wwwroot`, a API de `/api/*` e ambos compartilham o mesmo domínio HTTPS. Isso evita CORS entre serviços na produção. O banco PostgreSQL 17 é provisionado pelo Render no plano gratuito.
+
+Siga o [guia de publicação detalhado](docs/PUBLICACAO_RENDER.md) para vincular o repositório privado, criar uma instância **Blueprint** em Render com os recursos **Web Free** + **Postgres Free**, executar o deploy e testar o site.
+
+**Segurança e inicialização:** o Render injeta `DATABASE_URL` sem expor credenciais no GitHub. Com `SEED_DEMO_DATA=true`, o backend aplica a migration versionada e carrega os seis cursos fictícios apenas quando a base estiver vazia. Em desenvolvimento local, continue usando a migration normal. Os dados da publicação ficam no PostgreSQL, e não no armazenamento efêmero do container.
+
+**Limitações do plano gratuito:** serviço web pode hibernar após 15 minutos de inatividade; a primeira visita pode levar aproximadamente um minuto. O PostgreSQL Free expira após **30 dias**. A documentação oficial está em <https://render.com/docs/free>. Não selecionar instâncias pagas.
+
+### Validação pós-publicação (somente após receber a URL real)
+
+```powershell
+$site = "https://ENDERECO-REAL-DO-RENDER.onrender.com"
+Invoke-RestMethod "$site/health"
+Invoke-RestMethod "$site/api/cursos"
+Invoke-RestMethod "$site/api/cursos/1" | ConvertTo-Json -Depth 10
+```
+
+Também abra a URL HTTPS do site no navegador e teste a pesquisa, os filtros combinados, o detalhamento dentro de cada card, as imagens e a interface mobile.
 
 ## 11. Limitações conhecidas e decisões de escopo
 
@@ -245,7 +255,7 @@ Ainda não executada. Plano proposto:
 - Sem testes automatizados integrados na versão atual; testes manuais são necessários.
 - Sem cache, paginação, telemetria de produção ou regras rígidas de validação para status/modalidade.
 - Dados e imagens são fictícios/de demonstração; o material visual pertence ao desafio.
-- Infraestrutura gratuita e ZIP final de publicação ainda dependem de execução.
+- Infraestrutura Render gratuita preparada em Blueprint/Docker, mas ainda não ativada; ZIP final e URL pública dependem de execução.
 - O `health` não avalia a saúde do PostgreSQL.
 - Os controles de acessibilidade foram iniciados, sem auditoria formal WCAG.
 

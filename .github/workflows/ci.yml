@@ -1,0 +1,59 @@
+name: CI - Catálogo de Cursos
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend - .NET 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/CatalogoCursos.Api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar pacotes
+        run: dotnet restore --disable-parallel
+
+      - name: Compilar sem restaurar novamente
+        run: dotnet build --configuration Release --no-restore
+
+  frontend:
+    name: Frontend - TypeScript e Vite
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependências reproduzíveis
+        run: npm ci
+
+      - name: Verificar TypeScript e gerar build
+        run: npm run build

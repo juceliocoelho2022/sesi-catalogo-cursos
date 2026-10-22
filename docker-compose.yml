@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: sesi_catalogo
+      POSTGRES_USER: sesi
+      POSTGRES_PASSWORD: sesi_local_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - sesi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sesi -d sesi_catalogo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  sesi_pgdata:

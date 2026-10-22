@@ -13,6 +13,7 @@ O Centro de Tecnologias e Educação Digital (CTED) necessita de um catálogo we
 - [Roteiro para apresentação técnica](docs/ROTEIRO_DEMONSTRACAO.md)
 - [Registro do uso de IA](USO_DE_IA.md)
 - [Auditoria de aderência ao edital 519/2026](docs/AUDITORIA_CONFORMIDADE_519_2026.md)
+- [Comparação com o Figma e diferenças justificadas](docs/DIFERENCAS_FIGMA.md)
 
 ### Situação e evidências
 
@@ -24,7 +25,7 @@ O Centro de Tecnologias e Educação Digital (CTED) necessita de um catálogo we
 | Filtros isolados de Matemática e Linguagens retornam dois cursos cada | **Validado pelo candidato** |
 | Frontend React exibindo os cursos | **Observado em captura de tela** |
 | Exibição de detalhes dentro do card e chips de filtros | **Validado visualmente no Windows pelo candidato** |
-| Validação abrangente de acessibilidade e fidelidade ao Figma | **Pendente** |
+| Figma e acessibilidade | **Protótipo comparado em modo apresentação; landing alinhada aos elementos principais; auditoria mobile/WCAG pendente** |
 | Testes automatizados | **12 cenários de API + PostgreSQL validados no GitHub Actions**; UI mobile e a11y ainda pendentes |
 | Aplicação publicada em hospedagem gratuita | **Live no Render; URL pública e API consultadas em 22/10/2026** |
 
@@ -261,7 +262,7 @@ O `Dockerfile` e o `render.yaml` versionados documentam a infraestrutura. A cria
 | `GET /api/cursos/1` | Detalhes com 2 módulos |
 | Página inicial | Frontend React renderizado com dados dos cursos |
 
-**Ainda requer validação manual:** fidelidade ao Figma oficial, navegação por teclado e responsividade mobile, imagens individuais na hospedagem, comportamento de abertura/fechamento do detalhe em navegador externo e acessibilidade. O endpoint `/health` comprova disponibilidade do processo, não saúde do banco; os endpoints de cursos confirmam também a consulta real.
+**Ainda requer validação manual:** aferição pixel a pixel com o Figma, navegação por teclado e responsividade mobile, imagens individuais na hospedagem, comportamento de abertura/fechamento do detalhe em navegador externo e acessibilidade. O endpoint `/health` comprova disponibilidade do processo, não saúde do banco; os endpoints de cursos confirmam também a consulta real.
 
 ### Verificação por PowerShell
 
@@ -279,9 +280,16 @@ Invoke-RestMethod "$site/api/cursos/1" | ConvertTo-Json -Depth 10
 
 Para recriar a infraestrutura e revisar os cuidados de segurança, consulte [o guia de publicação](docs/PUBLICACAO_RENDER.md).
 
+
+### Adequação visual ao protótipo Figma
+
+Uma inspeção do protótipo [TEST DEV — SESI Indústria] identificou as telas **Landing Page**, **Detalhes Curso** e **AVA**. O frontend recebeu uma landing com hero vermelho e imagem industrial, título e CTA `Conhecer cursos`, além de cabeçalho navegável. O catálogo com filtros continua funcional na mesma página. Autenticação, matrícula e AVA não foram simulados porque o escopo mínimo da atividade exige consulta, não uma plataforma educacional completa.
+
+**Atenção:** a tela de detalhes na nossa implementação é expandida dentro do card, em vez de uma página independente. Os seis cursos fictícios também diferem do curso demonstrativo único do Figma. Essas e outras escolhas estão justificadas em [docs/DIFERENCAS_FIGMA.md](docs/DIFERENCAS_FIGMA.md). A avaliação detalhada das dimensões visuais e a validação responsiva permanecem pendentes.
+
 ## 11. Limitações conhecidas e decisões de escopo
 
-- Visual e conteúdo ainda não confrontados quadro a quadro com o Figma oficial.
+- O Figma foi inspecionado em modo protótipo e as diferenças de escopo/identidade foram registradas em [docs/DIFERENCAS_FIGMA.md](docs/DIFERENCAS_FIGMA.md). Medidas pixel a pixel e validação mobile ainda estão pendentes.
 - MVP somente leitura, sem autenticação, matrícula, inscrição, pagamento, CRUD ou Moodle.
 - Os 12 cenários automatizados de API estão implementados e passaram no CI; falta automação E2E da interface e a revisão de acessibilidade/mobile.
 - Sem cache, paginação, telemetria de produção ou regras rígidas de validação para status/modalidade.

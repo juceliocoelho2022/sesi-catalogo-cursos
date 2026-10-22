@@ -12,6 +12,7 @@ O Centro de Tecnologias e Educação Digital (CTED) necessita de um catálogo we
 - [Regras de negócio e critérios de aceitação](docs/REGRAS_DE_NEGOCIO.md)
 - [Roteiro para apresentação técnica](docs/ROTEIRO_DEMONSTRACAO.md)
 - [Registro do uso de IA](USO_DE_IA.md)
+- [Auditoria de aderência ao edital 519/2026](docs/AUDITORIA_CONFORMIDADE_519_2026.md)
 
 ### Situação e evidências
 
@@ -24,7 +25,7 @@ O Centro de Tecnologias e Educação Digital (CTED) necessita de um catálogo we
 | Frontend React exibindo os cursos | **Observado em captura de tela** |
 | Exibição de detalhes dentro do card e chips de filtros | **Validado visualmente no Windows pelo candidato** |
 | Validação abrangente de acessibilidade e fidelidade ao Figma | **Pendente** |
-| Testes automatizados | **Ainda não implementados** |
+| Testes automatizados | **12 cenários de API + PostgreSQL validados no GitHub Actions**; UI mobile e a11y ainda pendentes |
 | Aplicação publicada em hospedagem gratuita | **Live no Render; URL pública e API consultadas em 22/10/2026** |
 
 Esses estados devem ser atualizados após cada evidência de teste; não se deve confundir compilação, integração em desenvolvimento e publicação em produção.
@@ -212,6 +213,8 @@ Essas decisões constam do código, mas a conformidade WCAG e a correspondência
 
 ## 9. Verificações manuais de aceitação
 
+**Automação:** execute `bash tests/smoke-api.sh http://127.0.0.1:5080` em um terminal Bash com `curl` e `jq`, após iniciar API e PostgreSQL com dados fictícios. O GitHub Actions executa os mesmos 12 casos com um PostgreSQL 17 real e disponibiliza o ZIP final no job `entrega-zip`.
+
 1. Limpar filtros → 6 cursos.
 2. Pesquisar `Matemática` pelo nome → 1 curso.
 3. Categoria `Matemática`, sem pesquisa → 2 cursos.
@@ -270,6 +273,8 @@ Invoke-RestMethod "$site/api/cursos?categoria=Linguagens"
 Invoke-RestMethod "$site/api/cursos/1" | ConvertTo-Json -Depth 10
 ```
 
+**Artefato compilado:** no [GitHub Actions](https://github.com/juceliocoelho2022/sesi-catalogo-cursos/actions/runs/39774064375), abra o job `Artefato - ZIP de publicacao` e baixe `sesi-519-publicacao`. Ele contém `sesi-519-publicacao.zip` com a aplicação publicada, documentação e um `codigo-fonte.zip`. O arquivo ainda precisa ser inspecionado antes de anexá-lo à entrega.
+
 **Limitações do plano Free:** a instância web pode hibernar após 15 minutos de inatividade; o primeiro acesso pode demorar. O PostgreSQL Free foi criado em **22/10/2026** com expiração indicada pelo Render em **21/11/2026**. Isso não afeta a entrega imediata, mas restringe a disponibilidade de longo prazo.
 
 Para recriar a infraestrutura e revisar os cuidados de segurança, consulte [o guia de publicação](docs/PUBLICACAO_RENDER.md).
@@ -278,10 +283,10 @@ Para recriar a infraestrutura e revisar os cuidados de segurança, consulte [o g
 
 - Visual e conteúdo ainda não confrontados quadro a quadro com o Figma oficial.
 - MVP somente leitura, sem autenticação, matrícula, inscrição, pagamento, CRUD ou Moodle.
-- Sem testes automatizados integrados na versão atual; testes manuais são necessários.
+- Os 12 cenários automatizados de API estão implementados e passaram no CI; falta automação E2E da interface e a revisão de acessibilidade/mobile.
 - Sem cache, paginação, telemetria de produção ou regras rígidas de validação para status/modalidade.
 - Dados e imagens são fictícios/de demonstração; o material visual pertence ao desafio.
-- Infraestrutura Render gratuita publicada e API validada em 22/10/2026; ZIP final da entrega ainda pendente.
+- Infraestrutura Render gratuita publicada e API validada em 22/10/2026; arquivo ZIP de publicação gerado no GitHub Actions, aguardando inspeção/download pelo candidato.
 - O `health` não avalia a saúde do PostgreSQL.
 - Os controles de acessibilidade foram iniciados, sem auditoria formal WCAG.
 

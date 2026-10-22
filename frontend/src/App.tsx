@@ -4,7 +4,8 @@ type Aula = { id:number; titulo:string; descricao:string; ordem:number };
 type Modulo = { id:number; titulo:string; ordem:number; aulas:Aula[] };
 type CursoDetalhe = Curso & { modulos:Modulo[] };
 type Filtros = { categorias:string[]; modalidades:string[]; status:string[] };
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5080';
+// Em produção, o ASP.NET Core serve o frontend e a API na mesma origem.
+const API = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:5080');
 export default function App() {
  const [cursos,setCursos] = useState<Curso[]>([]);
  const [filtros,setFiltros] = useState<Filtros>({categorias:[],modalidades:[],status:[]});

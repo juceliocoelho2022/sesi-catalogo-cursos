@@ -44,8 +44,30 @@ export default function App() {
    ...(modalidade?[{chave:'modalidade',rotulo:`Modalidade: ${modalidade}`,remover:()=>setModalidade('')}]:[]),
    ...(status?[{chave:'status',rotulo:`Status: ${status}`,remover:()=>setStatus('')}]:[])
  ];
- return <><header><img src="/assets/logo-sesi-industria-primary.svg" alt="SESI Indústria"/><span>Catálogo de cursos • protótipo técnico</span></header><main>
-  <h1>Explore nossos cursos</h1><p>Encontre formações por área, modalidade ou disponibilidade.</p>
+ return <>
+  <a className="skip-link" href="#cursos">Ir para o catálogo de cursos</a>
+  <header className="site-header"><div className="site-header__inner">
+    <a href="#inicio" className="brand" aria-label="SESI Indústria, voltar ao início"><img src="/assets/logo-sesi-industria-primary.svg" alt="SESI Indústria"/></a>
+    <nav className="nav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+    <span className="case-label">Protótipo técnico • dados fictícios</span>
+  </div></header>
+  <main>
+    <section className="hero" id="inicio" aria-labelledby="titulo-hero">
+      <div className="hero__content">
+        <p className="hero__eyebrow">SESI + INDÚSTRIA</p>
+        <h1 id="titulo-hero">Impulsione sua carreira na indústria</h1>
+        <p>Amplie seus conhecimentos com excelência na melhor plataforma de estudos da indústria brasileira.</p>
+        <a className="hero__cta" href="#cursos">Conhecer cursos <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+    <section id="cursos" className="catalogo" aria-labelledby="titulo-catalogo">
+      <p className="catalogo__eyebrow">Principais cursos</p>
+      <h2 id="titulo-catalogo" className="catalogo__title">Explore nossos cursos</h2>
+      <p>Encontre formações por área, modalidade ou disponibilidade.</p>
   <section aria-label="Pesquisa e filtros" className="filtros"><label>Pesquisar curso<input placeholder="Nome do curso" value={pesquisa} onChange={e=>setPesquisa(e.target.value)}/></label>
   {([['Categoria',categoria,setCategoria,filtros.categorias],['Modalidade',modalidade,setModalidade,filtros.modalidades],['Status',status,setStatus,filtros.status]] as const).map(([rotulo,valor,set,opcoes])=><label key={rotulo}>{rotulo}<select value={valor} onChange={e=>set(e.target.value)}><option value="">Todas</option>{opcoes.map(x=><option key={x}>{x}</option>)}</select></label>)}
   <button type="button" onClick={limpar}>Limpar filtros</button></section>
@@ -64,7 +86,7 @@ export default function App() {
         <p><strong>Modalidade:</strong> {detalhe.modalidade}</p>
         <p><strong>Carga horária:</strong> {detalhe.cargaHoraria} horas</p>
         <p><strong>Público-alvo:</strong> {detalhe.publicoAlvo}</p>
-        <p><strong>Disponibilização:</strong> {detalhe.dataDisponibilizacao??'Não informada'}</p>
+        <p><strong>Disponibilização:</strong> {detalhe.dataDisponibilizacao ? detalhe.dataDisponibilizacao.split('-').reverse().join('/') : 'Não informada'}</p>
         <h4>Conteúdo programático</h4>
         {detalhe.modulos.length===0&&<p>Sem módulos cadastrados.</p>}
         {detalhe.modulos.map(m=><div key={m.id} className="modulo-inline"><h5>{m.ordem}. {m.titulo}</h5><ul>{m.aulas.map(a=><li key={a.id}><strong>{a.titulo}:</strong> {a.descricao}</li>)}</ul></div>)}
@@ -72,5 +94,8 @@ export default function App() {
     </section>}
     </article>)}</section>}
 
- </main><footer>Projeto demonstrativo — dados fictícios</footer></>;
+    </section>
+  </main>
+  <footer id="sobre"><div className="site-footer__inner"><img src="/assets/logo-sesi-industria-white.svg" alt="SESI Indústria"/><div><strong>Catálogo de cursos — estudo técnico</strong><p>Projeto demonstrativo para o processo seletivo 519/2026. Dados e cursos fictícios. Sem matrícula ou autenticação.</p></div></div></footer>
+ </>;
 }

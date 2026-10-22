@@ -57,3 +57,12 @@ jobs:
 
       - name: Verificar TypeScript e gerar build
         run: npm run build
+
+  docker:
+    name: Container - React + ASP.NET Core
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Construir imagem do serviço publicado
+        run: docker build --tag sesi-catalogo-ci .
